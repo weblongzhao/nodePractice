@@ -18,7 +18,13 @@ function staticRoot(staticPath,request,response){
                 city:'beijing',
                 weather:'晴天'
             }
-        }else {
+        }else if(pathObj.query.city =='tianjin'){
+            console.log('tianjin')
+            ret={
+                city:'tianjin',
+                weather:'雨天'
+            }
+        }else{
             ret = {
                 city:pathObj.query.city,
                 weather:'数据更新中'

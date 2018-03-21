@@ -4,6 +4,61 @@
     <meta charset="UTF-8" />
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="css/css.css">
+    <script type="text/javascript">
+        ajax({
+            url:'https://api.douban.com/v2/book/search',
+            type:'GET',
+            dataType:'json',
+            data:{
+                q:"北京"
+            },
+            onsuccess:function(rec){
+                console.log(rec) ;
+            },
+            onerror:function(){
+                console.log('server error') ;
+            }
+        })
+
+
+
+        function ajax(options){
+            // 设置默认值
+            var url = options.url;
+            var type = options.type || "GET";
+            var dataType = options.dataType || "json";
+            var data = options.data || {} ;
+            var onsuccess = options.onsuccess || function(){};
+            var onerror = options.onerror || function(){};
+            var dataStr = [];
+            for(var key in data){
+                dataStr.push(key+"="+data[key])
+            }
+            dataStr.join("&");
+            if(type == "GET"){
+                url+='?'+dataStr;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open(type,url,true);
+            xhr.onload = function(){
+                if((xhr.status>=200 && xhr.status<300) || xhr.status==304){
+                    if(dataType=='json'){
+                        onsuccess(JSON.parse(xhr.responseText))
+                    }else{
+                        onsuccess(xhr.responseText)
+                    }
+                }else{
+                    onerror();
+                }
+            }
+            xhr.onerror = onerror ;
+            if(type === "POST"){
+                xhr.send(dataStr)
+            }else {
+                xhr.send()
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>hi</h1>
